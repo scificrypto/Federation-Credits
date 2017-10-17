@@ -1093,7 +1093,10 @@ int64 static GetBlockValue(int nHeight, int64 nFees, unsigned int nBits)
     {
         return nSuperBlockCoin;
     }
-    
+    if (nHeight > 289588)
+    {
+        return nBlockRewardCoin/10 + nFees;
+    }
     return nBlockRewardCoin + nFees;
 }
 
@@ -1183,8 +1186,14 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     bnNew.SetCompact(pindexLast->nBits);
     bnNew *= nActualTimespan;
     bnNew /= nTargetTimespan;
+    
+    if ((pindexLast->nHeight) > 289588)
+        {
+          if (bnNew > bnProofOfWorkLimitGenesis)
+          bnNew = bnProofOfWorkLimitGenesis;
+        }
 
-    if (bnNew > bnProofOfWorkLimit)
+    else if (bnNew > bnProofOfWorkLimit)
         bnNew = bnProofOfWorkLimit;
 
     /// debug print
@@ -1205,7 +1214,7 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits)
     bnTarget.SetCompact(nBits);
     
     // Check range
-    if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimit)
+    if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimitGenesis)
         return error("CheckProofOfWork() : nBits below minimum work");
 
     // Check proof of work matches claimed amount
@@ -3084,7 +3093,7 @@ bool static AlreadyHave(const CInv& inv)
 // The message start string is designed to be unlikely to occur in normal data.
 // The characters are rarely used upper ASCII, not valid as UTF-8, and produce
 // a large 4-byte int at any alignment.
-unsigned char pchMessageStart[4] = { 0xcc, 0x17, 0x01, 0xff };
+unsigned char pchMessageStart[4] = { 0xcc, 0x17, 0x01, 0xf1 };
 
 
 void static ProcessGetData(CNode* pfrom)

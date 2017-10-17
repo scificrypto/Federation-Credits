@@ -1038,7 +1038,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.federationcredit
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "FederationCredit";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "FederationCredit2";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -1050,10 +1050,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     fs::create_directory(pathRet);
-    return pathRet / "FederationCredit";
+    return pathRet / "FederationCredit2";
 #else
     // Unix
-    return pathRet / ".federationcredit";
+    return pathRet / ".federationcredit2";
 #endif
 #endif
 }
