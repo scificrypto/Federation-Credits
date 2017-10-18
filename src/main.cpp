@@ -1113,7 +1113,7 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
 
     CBigNum bnResult;
     bnResult.SetCompact(nBase);
-    while (nTime > 0 && bnResult < bnProofOfWorkLimit)
+    while (nTime > 0 && bnResult < bnProofOfWorkLimitGenesis)
     {
         // Maximum 150% adjustment
         bnResult *= 150;
@@ -1121,8 +1121,8 @@ unsigned int ComputeMinWork(unsigned int nBase, int64 nTime)
         // ... per timespan
         nTime -= nTargetTimespan*2;
     }
-    if (bnResult > bnProofOfWorkLimit)
-        bnResult = bnProofOfWorkLimit;
+    if (bnResult > bnProofOfWorkLimitGenesis)
+        bnResult = bnProofOfWorkLimitGenesis;
     return bnResult.GetCompact();
 }
 
